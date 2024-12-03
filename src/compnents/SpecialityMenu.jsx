@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SpecialityMenu = () => {
     return (
-        <div className="flex flex-col items-center py-16 gap-4 text-gray-800 " id="#speciality">
+        <div className="flex flex-col items-center py-16 gap-4 text-gray-800 " id="speciality">
 
             <h1 className="text-3xl font-medium">Find by Speciality </h1>
 
