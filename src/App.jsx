@@ -10,6 +10,7 @@ import Appointment from "./pages/Appointment";
 import Navbar from "./compnents/Navbar";
 import Footer from "./compnents/Footer";
 
+
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%] ">
@@ -23,8 +24,8 @@ const App = () => {
         <Route path="/doctors/:speciality" element={<Doctors />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contract" element={<Contact />} />
-        <Route path="/myprofile" element={<MyProfile />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/my-appointments" element={<MyAppointment />} />
         <Route path="/appointment/:docId" element={<Appointment />} />
       </Routes>
