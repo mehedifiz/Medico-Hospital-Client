@@ -28,7 +28,12 @@ const Doctors = () => {
         <div
           className={`flex flex-col gap-4 text-sm text-gray-600 *:w-[94vw] *:sm:w-auto *:pl-3 *:py-1.5 *:pr-16 *:border *:border-gray-300 *:rounded *:transition-all *:cursor-pointer   `}
         >
-          <p  className={`${speciality === 'General physician' ? 'bg-indigo-50 text-black ' : ''}`} 
+          <p
+            className={`${
+              speciality === "General physician"
+                ? "bg-indigo-50 text-black "
+                : ""
+            }`}
             onClick={() =>
               speciality === "General physician"
                 ? navigate("/doctors")
@@ -38,7 +43,10 @@ const Doctors = () => {
             General physician
           </p>
 
-          <p  className={`${speciality === 'Gynecologist' ? 'bg-indigo-50 text-black ' : ''}`}
+          <p
+            className={`${
+              speciality === "Gynecologist" ? "bg-indigo-50 text-black " : ""
+            }`}
             onClick={() =>
               speciality === "Gynecologist"
                 ? navigate("/doctors")
@@ -48,7 +56,10 @@ const Doctors = () => {
             Gynecologist
           </p>
 
-          <p  className={`${speciality === 'Dermatologist' ? 'bg-indigo-50 text-black ' : ''}`}
+          <p
+            className={`${
+              speciality === "Dermatologist" ? "bg-indigo-50 text-black " : ""
+            }`}
             onClick={() =>
               speciality === " "
                 ? navigate("/doctors")
@@ -58,7 +69,10 @@ const Doctors = () => {
             Dermatologist
           </p>
 
-          <p className={`${speciality === 'Pediatricians' ? 'bg-indigo-50 text-black ' : ''}`}
+          <p
+            className={`${
+              speciality === "Pediatricians" ? "bg-indigo-50 text-black " : ""
+            }`}
             onClick={() =>
               speciality === "Pediatricians"
                 ? navigate("/doctors")
@@ -67,7 +81,10 @@ const Doctors = () => {
           >
             Pediatricians
           </p>
-          <p className={`${speciality === 'Neurologist' ? 'bg-indigo-50 text-black ' : ''}`}
+          <p
+            className={`${
+              speciality === "Neurologist" ? "bg-indigo-50 text-black " : ""
+            }`}
             onClick={() =>
               speciality === "Neurologist"
                 ? navigate("/doctors")
@@ -76,8 +93,13 @@ const Doctors = () => {
           >
             Neurologist
           </p>
-          
-          <p className={`${speciality === 'Gastroenterologist' ? 'bg-indigo-50 text-black ' : ''}`}
+
+          <p
+            className={`${
+              speciality === "Gastroenterologist"
+                ? "bg-indigo-50 text-black "
+                : ""
+            }`}
             onClick={() =>
               speciality === "Gastroenterologist"
                 ? navigate("/doctors")
@@ -98,9 +120,14 @@ const Doctors = () => {
               <img className="bg-blue-50 " src={item.image} alt="" />
               <div className="p-4">
                 <div className="flex items-center gap-2 text-sm text-center text-green-500">
-                  <p className="w-2 h-2 bg-green-500 rounded-full"></p>{" "}
-                  <p>Available</p>
+                  <p
+                    className={`w-2 h-2 rounded-full ${
+                      item.available ? "bg-green-500" : "bg-orange-700"
+                    }`}
+                  ></p>
+                  <p>{item.available ? "Available" : "Not Available"}</p>
                 </div>
+
                 <p className="text-gray-900 text-lg font-medium">{item.name}</p>
                 <p className="text-gray-600 text-sm">{item.speciality}</p>
               </div>

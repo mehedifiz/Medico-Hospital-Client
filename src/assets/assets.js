@@ -226,6 +226,8 @@ export const doctors = [
             line2: 'Circle, Ring Road, London'
         }
     },
+
+    // todo : upload those doc 
     {
         _id: 'doc11',
         name: 'Dr. Zoe Kelly',

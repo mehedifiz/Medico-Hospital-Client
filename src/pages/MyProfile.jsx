@@ -149,7 +149,7 @@ const MyProfile = () => {
         ) : (
           <button
             onClick={() => setIsEdit(true)}
-            className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
+            className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
           >
             Edit
           </button>

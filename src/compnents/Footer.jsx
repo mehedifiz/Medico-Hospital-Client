@@ -54,7 +54,7 @@ const Footer = () => {
             <h3 className="uppercase font-semibold text-gray-700">Get in Touch</h3>
             <ul className="space-y-2">
               <li className="text-gray-500">+880 4575 5325 665</li>
-              <li className="text-gray-500">mehedi.shanto.contract@gmail.com</li>
+              <li className="text-gray-500 text-xs ">mehedi.shanto.contract@gmail.com</li>
             </ul>
           </div>
 
