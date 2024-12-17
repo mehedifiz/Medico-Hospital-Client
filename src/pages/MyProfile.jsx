@@ -1,19 +1,9 @@
-import { useState } from "react";
-import { assets } from "../assets/assets";
+import { useContext, useState } from "react";
+import { AppContext } from "../context/AppContex";
 
 const MyProfile = () => {
-  const [userData, setUserData] = useState({
-    name: "Mehedi Hasan",
-    image: assets.profile_pic,
-    email: "me@me.com",
-    phone: "+15454545",
-    address: {
-      line1: "Shala Nafhds 3",
-      line2: "Dfdf Dfrerfvcbg, Bangladesh",
-    },
-    gender: "Male",
-    dob: "2000-01-06",
-  });
+  const { userData, setUserData, loadUserProfileData } = useContext(AppContext);
+  console.log(userData)
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -21,7 +11,11 @@ const MyProfile = () => {
     <div className="max-w-lg flex flex-col gap-6 text-sm mx-auto p-4">
       {/* Profile Picture */}
       <div className="flex justify-center mb-4">
-        <img src={userData.image} alt="Profile" className="w-36 h-36 rounded-full object-cover" />
+        <img
+          src={userData.image}
+          alt="Profile"
+          className="w-36 h-36 rounded-full object-cover"
+        />
       </div>
 
       {/* Name Section */}
@@ -35,9 +29,11 @@ const MyProfile = () => {
           }
         />
       ) : (
-        <p className="text-3xl font-medium text-neutral-800 mt-4">{userData.name}</p>
+        <p className="text-3xl font-medium text-neutral-800 mt-4">
+          {userData.name}
+        </p>
       )}
-      
+
       <hr className="bg-zinc-400 h-1 border-none my-4" />
 
       {/* Contact Information Section */}
