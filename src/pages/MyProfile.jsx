@@ -1,21 +1,100 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContex";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { assets } from "../../../admin/src/assets/assets";
 
 const MyProfile = () => {
-  const { userData, setUserData, loadUserProfileData } = useContext(AppContext);
-  console.log(userData)
+  const { userData, setUserData, token , backendUrl ,loadUserProfileData } = useContext(AppContext);
+  // console.log(userData)
 
   const [isEdit, setIsEdit] = useState(false);
+  const [image , setImage] = useState('');
 
-  return (
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await axios.post(
+        "https://api.imgbb.com/1/upload?key=8802a8cd178d628a544af3c62782302a",
+        formData
+      );
+      setImage(res.data.data.url); 
+      console.log("Image URL:", res.data.data.url);  
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image. Please try again.");
+    }
+  };
+
+
+  const updateProfile = async () => {
+    try {
+      // Create a plain JavaScript object
+      const updateData = {
+        name: userData.name,
+        phone: userData.phone,
+        address:JSON.stringify( userData.address), // JSON object
+        gender: userData.gender,   // Corrected from userData.name to userData.gender
+        dob: userData.dob,
+        image: image || userData.image, // Include image if updated
+      };
+      // console.log(userData)
+      // Send data as JSON to the backend
+      const { data } = await axios.post(  backendUrl + "/api/user/update-profie",
+        updateData, 
+        { 
+          headers: { 
+            'Content-Type': 'application/json',
+            token,
+          },
+        }
+      );
+
+       
+  
+      if (data.success) {
+        toast.success("Profile Updateed");
+        await loadUserProfileData();
+        setIsEdit(false);
+        setImage(''); // Reset image
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating the profile.");
+    }
+  };
+  
+
+  return userData && (
     <div className="max-w-lg flex flex-col gap-6 text-sm mx-auto p-4">
       {/* Profile Picture */}
       <div className="flex justify-center mb-4">
-        <img
-          src={userData.image}
-          alt="Profile"
-          className="w-36 h-36 rounded-full object-cover"
-        />
+       {
+        isEdit? 
+         <div className="flex gap-4 mb-8 text-gray-50 items-center">
+                   <label htmlFor="doc-img">
+                     <img
+                       src= { image? image :  userData.image || assets.upload_area}
+                       alt="Upload area"
+                       className="w-16 h-16 bg-gray-500 rounded-full cursor-pointer"
+                     />
+                   </label>
+                   <input type="file" id="doc-img" hidden onChange={handleImageUpload} />
+                   <p className="text-sm text-gray-600 mt-2">Upload doctor picture</p>
+                 </div>
+        :  <img
+        src={userData.image}
+        alt="Profile"
+        className="w-36 h-36 rounded-full object-cover"
+      />
+       }
       </div>
 
       {/* Name Section */}
@@ -137,7 +216,7 @@ const MyProfile = () => {
       <div className="mt-6 text-center">
         {isEdit ? (
           <button
-            onClick={() => setIsEdit(false)}
+            onClick={() => setIsEdit(updateProfile)}
             className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
           >
             Save Information
