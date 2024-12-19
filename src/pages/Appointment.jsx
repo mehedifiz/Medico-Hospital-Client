@@ -62,12 +62,19 @@ const Appointment = () => {
         const slotTime = formattedTime;
 
         const isSlotAvailable =
-          docInfo.slots_booked[slotDate] &&
-          docInfo.slots_booked[slotDate].includes(slotTime)
-            ? false
-            : true;
+        docInfo.slots_booked &&
+        docInfo.slots_booked[slotDate] &&
+        docInfo.slots_booked[slotDate].includes(slotTime)
+          ? false
+          : true;
+      
 
-        console.log("isSlotAvailable", isSlotAvailable);
+          console.log("Checking slot:", {
+            slotDate,
+            slotTime,
+            slots_booked: docInfo.slots_booked[slotDate],
+          });
+          
 
         if (isSlotAvailable) {
           timeSlots.push({
@@ -88,7 +95,7 @@ const Appointment = () => {
       toast.warn("Login to book appointment");
       return navigate("/login");
     }
-
+    
     try {
       const date = docSlots[slotIndex][0].datetime;
       // console.log(date)
@@ -97,15 +104,16 @@ const Appointment = () => {
       let year = date.getFullYear();
 
       const slotDate = day + "_" + month + "_" + year;
-
+      
       const { data } = await axios.post(
         backendUrl + "/api/user/book-appointment",
         { docId, slotDate, slotTime },
         { headers: { token } }
       );
-
+      
       if (data.success) {
         toast.success(data.message);
+        return navigate("/my-appointments");
       } else {
         toast.error(data.message);
       }
