@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContex";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyAppointment = () => {
   const { token, backendUrl, getDoctorsData } = useContext(AppContext);
@@ -56,6 +56,8 @@ const MyAppointment = () => {
        console.log(error);
      }
    }
+   
+
  
 
   useEffect(() => {
@@ -110,9 +112,9 @@ const MyAppointment = () => {
             {/* Appointment Actions */}
             <div className="flex flex-col gap-3 items-center mt-2">
               {!item.cancelled && (
-                <button className="bg-primary text-white w-44 px-2 py-3 rounded hover:bg-indigo-700 transition">
-                  Pay Online
-                </button>
+               <Link to={`/payment/${item._id}`}> <button className="bg-primary text-white w-44 px-2 py-3 rounded hover:bg-indigo-700 transition">
+               Pay Online
+             </button></Link>
               )}
               {!item.cancelled && (
                 <button
