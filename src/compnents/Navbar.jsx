@@ -31,19 +31,16 @@ const Navbar = () => {
   const { token, setToken , userData} = useContext(AppContext);
 
   const logOut =()=>{
+    navigate('/')
     setToken(false);
     localStorage.removeItem('token')
   }
+ 
   
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400 ">
-      <img
-        onClick={() => navigate("/")}
-        src={assets.logo}
-        className="md:w-44 w-24 cursor-pointer"
-        alt=""
-      />
+      <h2 className="md:text-4xl text-xl font-semibold cursor-pointer"> <span className="text-primary font-extrabold ">M</span>edico</h2>
 
       <ul className="hidden md:flex items-start gap-5 font-medium ">
         <NavLink to="/">

@@ -1,15 +1,24 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContex";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 import axios from "axios";
 import { assets } from "../../../admin/src/assets/assets";
 
 const MyProfile = () => {
   const { userData, setUserData, token , backendUrl ,loadUserProfileData } = useContext(AppContext);
-  // console.log(userData)
+  const navigate = useNavigate();  // Initialize the useNavigate hook
 
   const [isEdit, setIsEdit] = useState(false);
   const [image , setImage] = useState('');
+
+  // Check if the user is logged in
+  useEffect(() => {
+    if (!token) {
+      toast.error("You need to log in first.");
+      navigate("/login");  // Redirect to login page if no token is found
+    }
+  }, [token, navigate]);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -30,21 +39,20 @@ const MyProfile = () => {
     }
   };
 
-
   const updateProfile = async () => {
     try {
       // Create a plain JavaScript object
       const updateData = {
         name: userData.name,
         phone: userData.phone,
-        address:JSON.stringify( userData.address), // JSON object
+        address: JSON.stringify(userData.address), // JSON object
         gender: userData.gender,   // Corrected from userData.name to userData.gender
         dob: userData.dob,
         image: image || userData.image, // Include image if updated
       };
-      // console.log(userData)
+
       // Send data as JSON to the backend
-      const { data } = await axios.post(  backendUrl + "/api/user/update-profie",
+      const { data } = await axios.post(backendUrl + "/api/user/update-profie",
         updateData, 
         { 
           headers: { 
@@ -54,10 +62,8 @@ const MyProfile = () => {
         }
       );
 
-       
-  
       if (data.success) {
-        toast.success("Profile Updateed");
+        toast.success("Profile Updated");
         await loadUserProfileData();
         setIsEdit(false);
         setImage(''); // Reset image
@@ -70,31 +76,30 @@ const MyProfile = () => {
       toast.error("An error occurred while updating the profile.");
     }
   };
-  
 
   return userData && (
     <div className="max-w-lg flex flex-col gap-6 text-sm mx-auto p-4">
       {/* Profile Picture */}
       <div className="flex justify-center mb-4">
-       {
-        isEdit? 
-         <div className="flex gap-4 mb-8 text-gray-50 items-center">
-                   <label htmlFor="doc-img">
-                     <img
-                       src= { image? image :  userData.image || assets.upload_area}
-                       alt="Upload area"
-                       className="w-16 h-16 bg-gray-500 rounded-full cursor-pointer"
-                     />
-                   </label>
-                   <input type="file" id="doc-img" hidden onChange={handleImageUpload} />
-                   <p className="text-sm text-gray-600 mt-2">Upload doctor picture</p>
-                 </div>
-        :  <img
-        src={userData.image}
-        alt="Profile"
-        className="w-36 h-36 rounded-full object-cover"
-      />
-       }
+        {isEdit ? (
+          <div className="flex gap-4 mb-8 text-gray-50 items-center">
+            <label htmlFor="doc-img">
+              <img
+                src={image ? image : userData.image || assets.upload_area}
+                alt="Upload area"
+                className="w-16 h-16 bg-gray-500 rounded-full cursor-pointer"
+              />
+            </label>
+            <input type="file" id="doc-img" hidden onChange={handleImageUpload} />
+            <p className="text-sm text-gray-600 mt-2">Upload profile picture</p>
+          </div>
+        ) : (
+          <img
+            src={userData.image}
+            alt="Profile"
+            className="w-36 h-36 rounded-full object-cover"
+          />
+        )}
       </div>
 
       {/* Name Section */}

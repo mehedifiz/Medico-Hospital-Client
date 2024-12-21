@@ -2,21 +2,24 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContex";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CheckoutForm from "./CheckoutForm";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Loading from "../compnents/Loading";
 
-const stripePromise = loadStripe('pk_test_51QC1uEI8sInWbbt4ioMAiWk6J5onxQJbFJWRxTwUuuwcdYqEB2HrL19jwHHpSoKwkxrMEbrU5bWW3dJrxeykXZin00IBQiRiOw');
+const stripePromise = loadStripe(
+  "pk_test_51QC1uEI8sInWbbt4ioMAiWk6J5onxQJbFJWRxTwUuuwcdYqEB2HrL19jwHHpSoKwkxrMEbrU5bWW3dJrxeykXZin00IBQiRiOw"
+);
 
 const Payment = () => {
-  const {   backendUrl, token } = useContext(AppContext);
-
+  const { backendUrl, token } = useContext(AppContext);
 
   const [doctor, setDoctor] = useState(null);
-  const { appoinmentId } = useParams();  
+  const { appoinmentId } = useParams();
   const [appointments, setAppointments] = useState([]);
   const [appointment, setAppointment] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch appointments
   // console.log("doctors" , {doctors , appoinmentId})
@@ -28,15 +31,24 @@ const Payment = () => {
       });
       if (data.success) {
         // console.log( data.appoinments , appoinmentId ,)
-        const appoint =data.appoinments.find((app) => app._id === appoinmentId);
-        
-        console.log("data of doctor" , appoint.docData)
-        setAppointment(appoint)
+        const appoint = data.appoinments.find(
+          (app) => app._id === appoinmentId
+        );
 
-        setDoctor( appoint.docData)
-    
+        console.log("data of doctor", appoint);
 
-        setAppointments(data.appoinments);
+        if(appoint.payment == true){
+          toast.warning('Paid Appointment')
+          return navigate('/') 
+        } else{
+          setAppointment(appoint);
+
+          setDoctor(appoint.docData);
+  
+          setAppointments(data.appoinments);
+        }
+
+       
       } else {
         toast.error("Failed to fetch appointments");
       }
@@ -46,24 +58,19 @@ const Payment = () => {
     }
   };
 
- 
   // console.log('appointment' , appointment)
 
-  
   useEffect(() => {
     getUserAppointments();
   }, []);
- 
-
-  
 
   if (!doctor || !appointment) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
-  // todo if appointment.payment === true the donot code to the payment page 
+  // todo if appointment.payment === true the donot code to the payment page
 
-   return  (
+  return (
     <div className="h-[100vh] bg-gray-100 flex flex-col items-center justify-center p-4">
       <div className="bg-white shadow-lg rounded-lg max-w-md w-full p-6">
         <h2 className="text-xl font-bold text-center text-green-600 mb-4">
@@ -71,24 +78,33 @@ const Payment = () => {
         </h2>
         <div className="mb-4">
           <p className="text-gray-600">
-            <span className="font-semibold">Speciality:</span> {doctor.speciality}
+            <span className="font-semibold">Speciality:</span>{" "}
+            {doctor.speciality}
           </p>
           <p className="text-gray-600">
             <span className="font-semibold">Amount:</span> ${doctor.fees}
           </p>
           <p className="text-gray-600">
-            <span className="font-semibold">Appointment Date:</span> {appointment.slotDate}
+            <span className="font-semibold">Appointment Date:</span>{" "}
+            {appointment.slotDate}
           </p>
           <p className="text-gray-600">
-            <span className="font-semibold">Appointment Time:</span> {appointment.slotTime}
+            <span className="font-semibold">Appointment Time:</span>{" "}
+            {appointment.slotTime}
           </p>
           <p className="text-gray-600">
-            <span className="font-semibold">Payment Status:</span> {appointment.payment.toString()}
+            <span className="font-semibold">Payment Status:</span>{" "}
+            {appointment.payment.toString()}
           </p>
         </div>
         <div>
           <Elements stripe={stripePromise}>
-            <CheckoutForm amount={doctor.fees} doctor={doctor} appoinmentId={appoinmentId} getUserAppointments={getUserAppointments} />
+            <CheckoutForm
+              amount={doctor.fees}
+              doctor={doctor}
+              appoinmentId={appoinmentId}
+              getUserAppointments={getUserAppointments}
+            />
           </Elements>
         </div>
       </div>

@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="lg:max-w-xl flex flex-col items-center lg:items-start text-center lg:text-left">
           <a href="#" className="flex items-center space-x-3">
             <div className="w-52 flex items-center justify-center">
-              <img src={assets.logo} alt="Medico Hospital Logo" />
+            <h2 className="md:text-4xl text-xl font-semibold cursor-pointer"> <span className="text-primary font-extrabold ">M</span>edico</h2>
             </div>
           </a>
           <p className="mt-4 text-sm text-gray-500 leading-relaxed">
