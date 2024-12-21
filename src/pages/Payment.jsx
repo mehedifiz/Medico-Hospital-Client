@@ -10,7 +10,7 @@ import axios from "axios";
 const stripePromise = loadStripe('pk_test_51QC1uEI8sInWbbt4ioMAiWk6J5onxQJbFJWRxTwUuuwcdYqEB2HrL19jwHHpSoKwkxrMEbrU5bWW3dJrxeykXZin00IBQiRiOw');
 
 const Payment = () => {
-  const { doctors, backendUrl, token } = useContext(AppContext);
+  const {   backendUrl, token } = useContext(AppContext);
 
 
   const [doctor, setDoctor] = useState(null);
@@ -27,11 +27,13 @@ const Payment = () => {
         headers: { token },
       });
       if (data.success) {
+        // console.log( data.appoinments , appoinmentId ,)
+        const appoint =data.appoinments.find((app) => app._id === appoinmentId);
         
-        const appoi =data.appoinments.find((app) => app._id === appoinmentId);
-        
-        // console.log("data.appoinments" , appoi.docData)
-        setDoctor( appoi.docData)
+        console.log("data of doctor" , appoint.docData)
+        setAppointment(appoint)
+
+        setDoctor( appoint.docData)
     
 
         setAppointments(data.appoinments);
@@ -44,30 +46,14 @@ const Payment = () => {
     }
   };
 
-  // Find appointment based on docId
-  const fetchAppInfo = () => {
-     
-    const appoi = appointments.find((app) => app._id === appoinmentId);
-    if (appoi) {
-     
-     
-      setAppointment(appoi);
-    } else {
-      console.error("Appointment not found");
-    }
-  };
+ 
   // console.log('appointment' , appointment)
 
   
   useEffect(() => {
     getUserAppointments();
   }, []);
-
-  useEffect(() => {
-    if (appointments.length > 0) {
-      fetchAppInfo();
-    }
-  }, [appointments]);
+ 
 
   
 
@@ -75,7 +61,9 @@ const Payment = () => {
     return <div>Loading...</div>;
   }
 
-   return   (
+  // todo if appointment.payment === true the donot code to the payment page 
+
+   return  (
     <div className="h-[100vh] bg-gray-100 flex flex-col items-center justify-center p-4">
       <div className="bg-white shadow-lg rounded-lg max-w-md w-full p-6">
         <h2 className="text-xl font-bold text-center text-green-600 mb-4">
@@ -94,10 +82,13 @@ const Payment = () => {
           <p className="text-gray-600">
             <span className="font-semibold">Appointment Time:</span> {appointment.slotTime}
           </p>
+          <p className="text-gray-600">
+            <span className="font-semibold">Payment Status:</span> {appointment.payment.toString()}
+          </p>
         </div>
         <div>
           <Elements stripe={stripePromise}>
-            <CheckoutForm amount={doctor.fees} doctor={doctor} appoinmentId={appoinmentId} />
+            <CheckoutForm amount={doctor.fees} doctor={doctor} appoinmentId={appoinmentId} getUserAppointments={getUserAppointments} />
           </Elements>
         </div>
       </div>

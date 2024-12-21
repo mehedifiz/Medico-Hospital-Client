@@ -3,17 +3,20 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContex";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const CheckoutForm = ({ fees, doctor , appoinmentId }) => {
+const CheckoutForm = ({ fees, doctor, appoinmentId , getUserAppointments}) => {
   const { token, backendUrl, userData } = useContext(AppContext);
 
-  console.log(doctor);
+  const navigate = useNavigate()
+
+  // console.log(doctor);
 
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setclientSecret] = useState("");
 
-  console.log(clientSecret);
+  // console.log(clientSecret);
   useEffect(() => {
     const testRequest = async () => {
       try {
@@ -30,6 +33,8 @@ const CheckoutForm = ({ fees, doctor , appoinmentId }) => {
     };
     testRequest();
   }, []);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,19 +76,22 @@ const CheckoutForm = ({ fees, doctor , appoinmentId }) => {
     }
     if (paymentIntent.status === "succeeded") {
       const success = paymentIntent.status;
-      console.log( {success , appoinmentId} );
+      console.log({ success, appoinmentId });
 
-      const {data} = axios.post(backendUrl +"/api/user/verifyStripe" , {success , appoinmentId} , {headers:{token}})
+      const { data } = axios.post(
+        backendUrl + "/api/user/verifyStripe",
+        { success, appoinmentId },
+        { headers: { token } }
+      );
       // console.log("dat ", data)
 
-
-
-
+      getUserAppointments()
+      navigate('/')
       toast.success("Success");
     }
   };
 
-  return (
+  return  (
     <form onSubmit={handleSubmit}>
       <CardElement
         options={{
