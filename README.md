@@ -1,6 +1,6 @@
 # Full-Stack Hospital Appointment Booking App
 
-![Hospital Interior](../fontend/src/assets/hospital-interior.png)
+![Hospital Interior](src/assets/hospital-interior.png)
 
 
 ## Overview
