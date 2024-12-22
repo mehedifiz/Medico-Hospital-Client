@@ -116,12 +116,8 @@ const Navbar = () => {
         } md:hidden right-0 top-0 py-6 z-20 bg-white transition-all overflow-hidden`}
       >
         <div className="flex justify-between px-5">
-          <img
-            onClick={() => navigate("/")}
-            src={assets.logo}
-            className="w-24 cursor-pointer"
-            alt="Logo"
-          />
+        <h2 className="md:text-4xl text-xl font-semibold cursor-pointer"> <span className="text-primary font-extrabold ">M</span>edico</h2>
+
           <img
             src={assets.cross_icon}
             className="w-6 h-6 cursor-pointer"

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
 const MyAppointment = () => {
-  const { token, backendUrl, getDoctorsData } = useContext(AppContext);
+  const { token, backendUrl , getDoctorsData } = useContext(AppContext);
 
   const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const MyAppointment = () => {
     console.log('appoinmentId' , appointmentId);
     
      try {
-   const {data} =await axios.post(backendUrl + "/api/user/cencel-appointment", {appointmentId} , {headers:{token}} )
+   const {data} =await axios.post( backendUrl + "/api/user/cencel-appointment", {appointmentId} , {headers:{token}} )
  
   //  console.log(data)
    if(data.success){
