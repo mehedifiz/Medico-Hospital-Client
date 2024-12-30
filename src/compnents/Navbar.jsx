@@ -23,6 +23,10 @@ const Navbar = () => {
         <li className="py-1 ">Contact</li>
         <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden " />
       </NavLink>
+      <NavLink to="https://medicopanal.web.app">
+        <li className="py-1 ">Panal Login</li>
+        <hr className="border outline-none h-0.5 bg-primary w-3/5 m-auto hidden " />
+      </NavLink>
     </>
   );
 
@@ -59,6 +63,11 @@ const Navbar = () => {
           <li className="py-1 ">Contact</li>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden " />
         </NavLink>
+         <NavLink target="_blank" to="https://medicopanal.web.app">
+        <li className="py-1 border border-primary p-3 rounded-full">Panal Login</li>
+        <hr className="border outline-none h-0.5 bg-primary w-3/5 m-auto hidden " />
+      </NavLink>
+        
       </ul>
 
       <div className="flex items-center gap-4">
